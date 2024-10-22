@@ -52,86 +52,86 @@ with st.sidebar.header('Please upload your csv data'):
     param1 = st.sidebar.text_input("Parameter y", value="column y")
     param2 = st.sidebar.text_input("Parameter x", value="column x")
     
-    #main content
-    st.title("OLS SUMMARY")
+#main content
+st.title("OLS SUMMARY")
      
      #sidebar collect user input features into dataframe 
-    st.sidebar.header('y = slope * x + y-intercept:')
-    slope = st.sidebar.number_input("Enter the slope with 3 or 4 decimal places:",value=0.00, step=0.01)
-    y_intercept = st.sidebar.number_input("Enter the y-intercept with 3 or 4 decimal places:", value=0.00,  step=0.01)
+st.sidebar.header('y = slope * x + y-intercept:')
+slope = st.sidebar.number_input("Enter the slope with 3 or 4 decimal places:",value=0.00, step=0.01)
+y_intercept = st.sidebar.number_input("Enter the y-intercept with 3 or 4 decimal places:", value=0.00,  step=0.01)
      
      
-     #Input for radio promotion budget 
-    radio_budget= st.sidebar.number_input("Enter the x value for planning:")
+#Input for radio promotion budget 
+radio_budget= st.sidebar.number_input("Enter the x value for planning:")
      
-     #Calculate the sales based on the entered values 
-    sales= calculate_sales(radio_budget,slope, y_intercept)
+#Calculate the sales based on the entered values 
+sales= calculate_sales(radio_budget,slope, y_intercept)
      
      #display the calculated sales
-    st.sidebar.write(f"Proejected dependent value(y): {sales}")
+st.sidebar.write(f"Proejected dependent value(y): {sales}")
      
      #display the dataset 
-    st.subheader("1. Dataset")
+st.subheader("1. Dataset")
      
-    if uploaded_file is not None:
-         df = pd.read_csv(uploaded_file)
-         st.markdown('***1.1 Overview of dataset***')
-         st.write(df.head(10))
+if uploaded_file is not None:
+    df = pd.read_csv(uploaded_file)
+    st.markdown('***1.1 Overview of dataset***')
+    st.write(df.head(10))
          
-         st.write("keys:",df.keys())
-         st.write("Shape:",df.shape)
-         st.write("data types:",df.dtypes)
+    st.write("keys:",df.keys())
+    st.write("Shape:",df.shape)
+    st.write("data types:",df.dtypes)
          
-         st.write("Check missing values:")
-         st.write(df.isna().sum())
+    st.write("Check missing values:")
+    st.write(df.isna().sum())
          
-         st.write("Missing values along colum:",df.isna().any(axis=1).sum())
+    st.write("Missing values along colum:",df.isna().any(axis=1).sum())
          
-         st.write("Drop rows with missing values:",df.dropna(axis=0))
-         st.write("Missing values:", df.isnull().sum())
+    st.write("Drop rows with missing values:",df.dropna(axis=0))
+    st.write("Missing values:", df.isnull().sum())
          
          
-         #build and display the linear regression model
-         fitted_values, model_summary = build_model(df, param1, param2)
-         st.subheader('2. Model Summary')
-         st.text_area('Model Summary', model_summary, height=700)
+    #build and display the linear regression model
+    fitted_values, model_summary = build_model(df, param1, param2)
+    st.subheader('2. Model Summary')
+    st.text_area('Model Summary', model_summary, height=700)
          
-         st.subheader(" 3. Create a regression plot using seaborn")
-         fig1, ax = plt.subplots()
-         sns.regplot(x=param2, y=param1, data=df, logistic=True, ci=None, ax=ax)
-         st.pyplot(fig1)
+    st.subheader(" 3. Create a regression plot using seaborn")
+    fig1, ax = plt.subplots()
+    sns.regplot(x=param2, y=param1, data=df, logistic=True, ci=None, ax=ax)
+    st.pyplot(fig1)
          
-         st.subheader(" 4. Create pairplot using seaborn")
-         st.subheader("Pairplot")
-         pairplot_fig = sns.pairplot(df)
-         st.pyplot(pairplot_fig)
+    st.subheader(" 4. Create pairplot using seaborn")
+    st.subheader("Pairplot")
+    pairplot_fig = sns.pairplot(df)
+    st.pyplot(pairplot_fig)
          
-         #get the residuals from model 
-         residuals = model.resid
+    #get the residuals from model 
+    residuals = model.resid
          
-         st.subheader("5. Visualize the distribution of the residuals")
+    st.subheader("5. Visualize the distribution of the residuals")
          
-         fig3, ax3= plt.subplots()
-         sns.histplot(residuals, ax=ax3)
-         ax3.set_xlabel("Residual Value")
-         ax3.set_title("Histogram of residuals")
+    fig3, ax3= plt.subplots()
+    sns.histplot(residuals, ax=ax3)
+    ax3.set_xlabel("Residual Value")
+    ax3.set_title("Histogram of residuals")
          
-         #display the plot using st.pyplots()
-         st.pyplot(fig3)
-         st.write("Check if the distribution is normal one")
+    #display the plot using st.pyplots()
+    st.pyplot(fig3)
+    st.write("Check if the distribution is normal one")
          
-         #display the q-q plot
-         st.subheader('6. Create Q-Q plot')
-         fig4, ax4= plt.subplots()
-         sm.qqplot(residuals, line="s", ax=ax4)
-         ax4.set_title("Q-Q plot of Residuals")
+    #display the q-q plot
+    st.subheader('6. Create Q-Q plot')
+    fig4, ax4= plt.subplots()
+    sm.qqplot(residuals, line="s", ax=ax4)
+    ax4.set_title("Q-Q plot of Residuals")
          
-         st.pyplot(fig4)
-         st.write("normality assumption is met when the points follow a straight diagonal line")
+    st.pyplot(fig4)
+    st.write("normality assumption is met when the points follow a straight diagonal line")
          
-         st.subheader("7. Create a scatterplot of the residuals against fiitted values")
-         fig5 = sns.scatterplot(x=fitted_values, y= residuals)
-         fig5.set_xlabel("Fitted Values")
-         fig5.set_ylabel("Residuals")
+    st.subheader("7. Create a scatterplot of the residuals against fiitted values")
+    fig5 = sns.scatterplot(x=fitted_values, y= residuals)
+    fig5.set_xlabel("Fitted Values")
+    fig5.set_ylabel("Residuals")
          
-         st.pyplot(fig4.figure)
+    st.pyplot(fig4.figure)
